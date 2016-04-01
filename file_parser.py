@@ -36,6 +36,12 @@ def formatTime(time):
     time  = time.split()
     start = int(time[0][:time[0].index(":")])
     end   = int(time[3][:time[3].index(":")])
+    
+    if time[1] == 'PM':
+        if start != 12:
+            start += 12
+        end += 12    
+        
     return (start,end)
 
 def print_avail(availability):
