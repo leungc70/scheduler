@@ -13,20 +13,42 @@ def schedule_csp_model(profs, students, time_frame):
     time_frame - tuple
     '''
     
-    VAR_TIME_SIZE = 0.5
+    # CREATE THE DOMAIN    
+    dom = []
+    for hour in range(time_frame[0], time_frame[1], 1):
+        dom.append(hour)
     
     
-    # CREATE THE VARIABLES
-    var_array = []
-    # create the vars
-    # number of vars = sum( each student * student.profs )
-    # the domain is the potential time to meet prof. this shud be within time_frame
+    # CREATE THE VARIABLES    
+    var_array = []    
+    for student in students:
+        for prof in students[student][0]:
+            name = '{}.{}'.format(student, prof)
+            var_array.append(Variable(name,prof,dom))
+            
     
+    constraints = []
     
-    # CREATE THE CONSTRAINTS 1
-    # prof avail == student avail
+    # CREATE THE CONSTRAINTS [(1) - MUTUAL EXCLUSIVE TIME FOR EACH PROF]
     
-    # CREATE THE CONSTRAINTS 2
+    # construct the tuples for the constraint
+    sat_tuples = []
+    for t in itertools.combinations(dom,dom):
+        sat_tuples.append(t)    
+    
+    # contruct the binary constraint of each student pair
+    for i,student in enumerate(var_array):
+        for j,student2 in enumerate(var_array[i:]):
+            if student.prof_name == student2.prof_name:
+                
+                # construct the constraint
+                name = "time_diff({},{})".format(student.name,student2.name)
+                con = Constraint(name, [student, student2])
+                con.add_satisfying_tuples(sat_tuples)
+                constraints.append(con)
+                
+    
+    # CREATE THE CONSTRAINTS [(2) - student.prof time == prof.avail]
     
     
     
@@ -54,4 +76,4 @@ if __name__ == '__main__':
                  'student5':[all_profs        ,  [time_frame]]        }
      
     
-    pass
+    schedule_csp_model(profs, students, time_frame)
