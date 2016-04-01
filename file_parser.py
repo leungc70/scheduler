@@ -1,6 +1,6 @@
 import csv
 
-FILE = "sample_data\Prof-Sample.csv"
+FILE = "sample_data/Prof-Sample.csv"
 
 def read(file):
     """ file -> dict
@@ -33,9 +33,14 @@ def formatTime(time):
     s : the starting time
     e : the ending time
     """
+    
     time  = time.split()
     start = int(time[0][:time[0].index(":")])
     end   = int(time[3][:time[3].index(":")])
+    if time[1] == 'PM':
+        if start != 12:
+            start += 12
+        end += 12
     return (start,end)
 
 def print_avail(availability):
