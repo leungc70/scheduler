@@ -75,12 +75,11 @@ class Variable:
     #
     #set up and info methods
     #
-    def __init__(self, name, prof_name, domain=[]):
+    def __init__(self, name, domain=[]):
         '''Create a variable object, specifying its name (a
         string). Optionally specify the initial domain.
         '''
         self.name = name                #text name for variable
-        self.prof_name = prof_name
         self.dom = list(domain)         #Make a copy of passed domain
         self.curdom = [True] * len(domain)      #using list
         #for bt_search
