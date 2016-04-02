@@ -1,6 +1,6 @@
 import csv
 
-FILE = "sample_data\Prof-Sample.csv"
+FILE = "sample_data/Prof-Sample.csv"
 
 def read(file):
     """ file -> dict
