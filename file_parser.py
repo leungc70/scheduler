@@ -1,10 +1,20 @@
+
+<<<<<<< HEAD
 import csv
-
+import googlemaps
+import json
+import time
+from datetime import datetime
+FILE  = "sample_data\Prof-Sample.csv"
+FILE2 = "sample_data\Location-Sample.csv"
+gmaps = googlemaps.Client(key='AIzaSyA8vRIsxHzhbY113NJpQqomQmBVd6zLswE')
+=======
 FILE = "sample_data/Prof-Sample.csv"
+>>>>>>> origin/master
 
-def read(file):
+def read_avail(file):
     """ file -> dict
-    Reading a csv file and parse into an pyhton dictionary
+    Reading a  csv file and parse into an pyhton dictionary
     """
     f = open(file, 'rt')
     reader = csv.reader(f)
@@ -26,7 +36,31 @@ def read(file):
     f.close()
     
     return avail
+
+def read_location(file):
+    f = open(file,'rt')
+    reader = csv.reader(f)
+    location = dict()
+    for row in reader:
+        location[row[0]] = row[1:]
+    f.close()
     
+
+    return distance(location)
+
+def distance(location):
+    
+    l =  {location[loc][0] for loc in location}
+    dist = dict.fromkeys(l,list(l))
+    
+    t= dict(dist)
+    for key in t:
+        temp = []
+        for loc in t[key]: 
+            temp.append(gmaps.directions(key, loc,mode="walking")[0]['legs'][0]['distance']['text'])
+        t[key] = temp
+    return t
+
 def formatTime(time):
     """     str -> tuple
     convert a time string into a tuple with (s,e)
@@ -48,7 +82,32 @@ def print_avail(availability):
     for i in availability:
         print(i ,end=": ")
         print (availability[i]) 
+
     
 if __name__ == "__main__": 
-    d = read(FILE)
-    print_avail(d)
+    stime = time.process_time()
+    d = read_avail(FILE)
+    l = read_location(FILE2)
+    print("Setup Time = {}".format(time.process_time()-stime))
+    #o = distance(l)
+    #print_avail(o)
+    #print_avail(l)
+
+    # Replace the API key below with a valid API key.
+    '''
+    stime = time.process_time()
+    
+    # Geocoding and address
+    geocode_result = gmaps.geocode('1121 Bay Street, Toronto,Ontario, Canada')
+    
+    # Look up an address with reverse geocoding
+    reverse_geocode_result = gmaps.reverse_geocode((40.714224, -73.961452))
+    
+    # Request directions 
+    directions_result = gmaps.directions("M4L 1Y5",
+                                         "M5S 2E4",
+                                         mode="walking")
+    print("Setup Time = {}".format(time.process_time()-stime))
+    print(json.dumps(directions_result, sort_keys=True, indent=4))
+    '''
+
