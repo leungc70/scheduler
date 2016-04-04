@@ -11,7 +11,7 @@
 3. For team collaboration, remember to do all your work in a local branch then do a pull request so that we can merge it on "scheduler/master"
 4. The version of Python we are using for the project is 3.4.3
 
-### 
+### Pasring Input
 
 To use the file_parser, make sure to install the googlemaps module 
 
