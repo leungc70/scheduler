@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 import csv
 import googlemaps
 import json
@@ -7,6 +8,9 @@ from datetime import datetime
 FILE  = "sample_data\Prof-Sample.csv"
 FILE2 = "sample_data\Location-Sample.csv"
 gmaps = googlemaps.Client(key='AIzaSyA8vRIsxHzhbY113NJpQqomQmBVd6zLswE')
+=======
+FILE = "sample_data/Prof-Sample.csv"
+>>>>>>> origin/master
 
 def read_avail(file):
     """ file -> dict
