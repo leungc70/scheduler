@@ -5,6 +5,7 @@ import time
 from datetime import datetime
 FILE  = "sample_data\Prof-Sample.csv"
 FILE2 = "sample_data\Location-Sample.csv"
+FILE3 = "sample_data\Student-Sample.csv"
 gmaps = googlemaps.Client(key='AIzaSyA8vRIsxHzhbY113NJpQqomQmBVd6zLswE')
 
 def read_avail(file):
@@ -74,6 +75,17 @@ def formatTime(time):
         
     return (start,end)
 
+def read_student(file):
+    f = open(file,'rt')
+    reader = csv.reader(f)
+    student = dict()
+    for row in reader:
+        student[row[0]] = [row[1:],[(9,17)]]
+    f.close()
+    
+
+    return student
+     
 def print_avail(availability):
     for i in availability:
         print(i ,end=": ")
@@ -84,10 +96,11 @@ if __name__ == "__main__":
     stime = time.process_time()
     d = read_avail(FILE)
     l = read_location(FILE2)
+    s = read_student(FILE3)
     print("Setup Time = {}".format(time.process_time()-stime))
     #o = distance(l)
     #print_avail(o)
-    #print_avail(l)
+    print_avail(s)
 
     # Replace the API key below with a valid API key.
     '''
