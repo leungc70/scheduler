@@ -6,8 +6,12 @@ Prof Avability,,,,,,,,
 ,9:00 AM - 10:00 AM,10:00 AM - 11:00 AM,11:00 AM - 12:00 PM,12:00 PM - 1:00 PM,1:00 PM - 2:00 PM,2:00 PM - 3:00 PM,3:00 PM - 4:00 PM,4:00 PM - 5:00 PM
 Prof A,,OK,OK,,,OK,OK,OK
 Prof B,,OK,OK,OK,OK,OK,OK,
-Prof C,,OK,OK,,OK,OK,OK,
+Prof C,,OK,OK,,OK,,OK,
 Prof D,,,,OK,OK,OK,OK,
-Prof E,,,,,,,,OK
+Prof E,OK,OK,,OK,OK,,,OK
 Prof F,,OK,OK,,,OK,OK,OK
+Prof G,OK,OK,OK,OK,,,OK,OK
+Prof H,OK,OK,OK,,OK,OK,OK,
+Prof I,OK,OK,OK,OK,OK,OK,OK,OK
+Prof J,OK,OK,OK,,,OK,OK,OK
 Count,0,4,4,2,3,5,5,3
