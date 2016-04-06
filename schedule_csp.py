@@ -5,8 +5,11 @@ Construct and return a Schedule CSP model.
 
 from cspbase import *
 from propagators import *
+import file_parser
 import itertools
-
+FILE  = "sample_data\Prof-Sample.csv"
+FILE2 = "sample_data\Location-Sample.csv"
+FILE3 = "sample_data\Student-Sample.csv"
 def schedule_csp_model(profs, students, time_frame):
     '''
     profs - dictionary
@@ -84,7 +87,7 @@ def schedule_csp_model(profs, students, time_frame):
 
 def print_soln(var_array):
     for var in var_array:
-        print("{} = {}".format(var,var.get_assigned_value()))
+        print("{} = {} to {}".format(var,var.get_assigned_value(),var.get_assigned_value()+1))
 
 
 
@@ -95,19 +98,25 @@ if __name__ == '__main__':
     
     
     # availability of profs
+    """
     profs = { 'prof1':[(0,2),(4,8)],
               'prof2':[(7,10),(11,14),(15,16)],
               'prof3':[(6,10),(15,17),(20,22)] }
+    """
+    profs = file_parser.read_avail(FILE)
     
     all_profs = list(profs.keys())
     
     # preferred prof and availability of students
+    """
     students = { 'student1':[['prof1'],          [time_frame]],
                  'student2':[['prof2'],          [(0,10),(10,2)]],
                  'student3':[['prof2','prof3'],  [time_frame]],
                  'student4':[['prof1','prof3'],  [(5,10),(20,24)]],
                  'student5':[all_profs        ,  [time_frame]]        }
      
+    """
+    students = file_parser.read_student(FILE3)
     
     csp,var_array = schedule_csp_model(profs, students, time_frame)
     
