@@ -7,9 +7,9 @@ from cspbase import *
 from propagators import *
 import file_parser
 import itertools
-FILE  = "sample_data\Prof-Sample.csv"
-FILE2 = "sample_data\Location-Sample.csv"
-FILE3 = "sample_data\Student-Sample.csv"
+FILE  = "sample_data/Prof-Sample.csv"
+FILE2 = "sample_data/Location-Sample.csv"
+FILE3 = "sample_data/Student-Sample.csv"
 def schedule_csp_model(profs, students, time_frame):
     '''
     profs - dictionary
@@ -87,7 +87,16 @@ def schedule_csp_model(profs, students, time_frame):
 
 def print_soln(var_array):
     for var in var_array:
-        print("{} = {} to {}".format(var,var.get_assigned_value(),var.get_assigned_value()+1))
+        start = var.get_assigned_value()        
+        end = start + 1
+        
+        if start > 12: start = "{}pm".format(start - 12) 
+        else: start = "{}am".format(start)
+        
+        if end > 12: end = "{}pm".format(end - 12) 
+        else: end = "{}am".format(end)  
+        
+        print("{} = {} to {}".format(var,start,end))
 
 
 

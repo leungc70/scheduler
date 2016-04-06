@@ -3,9 +3,9 @@ import googlemaps
 import json
 import time
 from datetime import datetime
-FILE  = "sample_data\Prof-Sample.csv"
-FILE2 = "sample_data\Location-Sample.csv"
-FILE3 = "sample_data\Student-Sample.csv"
+FILE  = "sample_data/Prof-Sample.csv"
+FILE2 = "sample_data/Location-Sample.csv"
+FILE3 = "sample_data/Student-Sample.csv"
 gmaps = googlemaps.Client(key='AIzaSyA8vRIsxHzhbY113NJpQqomQmBVd6zLswE')
 
 def read_avail(file):
