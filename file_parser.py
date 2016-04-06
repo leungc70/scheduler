@@ -40,21 +40,27 @@ def read_location(file):
     for row in reader:
         location[row[0]] = row[1:]
     f.close()
+
+    return map_distance(location)
+
+
+def formatDistance(distance):
     
+    distance = distance.split()
+    if distance[1] == "km":
+        return float(distance[0]) * 1000
+    else:
+        return float(distance[0])
 
-    return distance(location)
-
-def distance(location):
+def map_distance(location):
     
     l =  {location[loc][0] for loc in location}
     dist = dict.fromkeys(l,list(l))
-    
-    t= dict(dist)
-    for key in t:
-        temp = []
-        for loc in t[key]: 
-            temp.append(gmaps.directions(key, loc,mode="walking")[0]['legs'][0]['distance']['text'])
-        t[key] = temp
+    t= dict()
+    for key in dist:
+        for loc in dist[key]:
+            path = gmaps.directions(key, loc,mode="walking")[0]['legs'][0]['distance']['text']
+            t[(key,loc)] = formatDistance(path)
     return t
 
 def formatTime(time):
@@ -86,7 +92,7 @@ def read_student(file):
 
     return student
      
-def print_avail(availability):
+def print_dict(availability):
     for i in availability:
         print(i ,end=": ")
         print (availability[i]) 
@@ -98,9 +104,9 @@ if __name__ == "__main__":
     l = read_location(FILE2)
     s = read_student(FILE3)
     print("Setup Time = {}".format(time.process_time()-stime))
-    #o = distance(l)
-    #print_avail(o)
-    print_avail(s)
+    print_dict(l)
+    print_dict(d)
+    print_dict(s)
 
     # Replace the API key below with a valid API key.
     '''
