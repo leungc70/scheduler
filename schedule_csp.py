@@ -46,12 +46,12 @@ def schedule_csp_model(profs, students, time_frame):
                 exit()
             
             name = '{}.{}'.format(student, prof)
-            var_array.append(Variable(name,prof,list(final_dom)))
+            var_array.append(Variable(name,student,prof,list(final_dom)))
             
     
     constraints = []
     
-    # CREATE THE CONSTRAINTS [(1) - MUTUAL EXCLUSIVE TIME FOR EACH PROF]   
+    # CREATE THE CONSTRAINTS [(1) - PROF CAN ONLY MEET 1 STUDENT PER HOUR]   
     
     # contruct the binary constraint of each student pair
     for i,student in enumerate(var_array):
@@ -65,11 +65,29 @@ def schedule_csp_model(profs, students, time_frame):
                         sat_tuples.append((v1,v2))                 
                 
                 # construct the constraint
-                name = "time_diff({},{})".format(student.name,student2.name)
+                name = "prof_diff({},{})".format(student.name,student2.name)
                 con = Constraint(name, [student, student2])
                 con.add_satisfying_tuples(sat_tuples)
                 constraints.append(con)       
     
+    
+    # CREATE THE CONSTRAINTS [(2) - STUDENT CAN ONLY MEET 1 PROF PER HOUR]   
+    for i,student in enumerate(var_array):
+        for student2 in var_array[i+1:]:
+            if student.stud_name == student2.stud_name:
+                
+                # construct the tuples for the constraint
+                sat_tuples = []
+                for v1,v2 in itertools.product(student.dom,student2.dom):
+                    if v1 != v2:
+                        sat_tuples.append((v1,v2))                 
+                
+                # construct the constraint
+                name = "student_diff({},{})".format(student.name,student2.name)
+                con = Constraint(name, [student, student2])
+                con.add_satisfying_tuples(sat_tuples)
+                constraints.append(con)                  
+                
     
     
     # CONSTRUCT THE SCHEDULING CSP
