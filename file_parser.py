@@ -1,4 +1,5 @@
 import csv
+import os
 import googlemaps
 import json
 import time
@@ -6,6 +7,7 @@ from datetime import datetime
 FILE  = "sample_data/Prof-Sample.csv"
 FILE2 = "sample_data/Location-Sample.csv"
 FILE3 = "sample_data/Student-Sample.csv"
+FILE4 = "sample_data/Distance-Sample.csv"
 gmaps = googlemaps.Client(key='AIzaSyA8vRIsxHzhbY113NJpQqomQmBVd6zLswE')
 
 def read_avail(file):
@@ -40,21 +42,39 @@ def read_location(file):
     for row in reader:
         location[row[0]] = row[1:]
     f.close()
+
+    return location
+
+
+def read_student(file):
+    f = open(file,'rt')
+    reader = csv.reader(f)
+    student = dict()
+    for row in reader:
+        student[row[0]] = [row[1:],[(9,17)]]
+    f.close()
     
 
-    return distance(location)
+    return student
 
-def distance(location):
+def read_distance(file):
+    f = open(file,'rt')
+    reader = csv.reader(f)
+    d = dict()
+    for row in reader:
+        d[(row[0],row[1])] = float(row[2])
+    f.close()
+    return d
+
+def map_distance(location):
     
     l =  {location[loc][0] for loc in location}
     dist = dict.fromkeys(l,list(l))
-    
-    t= dict(dist)
-    for key in t:
-        temp = []
-        for loc in t[key]: 
-            temp.append(gmaps.directions(key, loc,mode="walking")[0]['legs'][0]['distance']['text'])
-        t[key] = temp
+    t= dict()
+    for key in dist:
+        for loc in dist[key]:
+            path = gmaps.directions(key, loc,mode="walking")[0]['legs'][0]['distance']['text']
+            t[(key,loc)] = formatDistance(path)
     return t
 
 def formatTime(time):
@@ -75,18 +95,17 @@ def formatTime(time):
         
     return (start,end)
 
-def read_student(file):
-    f = open(file,'rt')
-    reader = csv.reader(f)
-    student = dict()
-    for row in reader:
-        student[row[0]] = [row[1:],[(9,17)]]
-    f.close()
-    
 
-    return student
+def formatDistance(distance):
+    
+    distance = distance.split()
+    if distance[1] == "km":
+        return float(distance[0]) * 1000
+    else:
+        return float(distance[0])
+
      
-def print_avail(availability):
+def print_dict(availability):
     for i in availability:
         print(i ,end=": ")
         print (availability[i]) 
@@ -94,13 +113,21 @@ def print_avail(availability):
     
 if __name__ == "__main__": 
     stime = time.process_time()
-    d = read_avail(FILE)
+    a = read_avail(FILE)
     l = read_location(FILE2)
     s = read_student(FILE3)
+    d = read_distance(FILE4)
+    #m = map_distance(l)
+    #save_distance(m)
+   
     print("Setup Time = {}".format(time.process_time()-stime))
-    #o = distance(l)
-    #print_avail(o)
-    print_avail(s)
+    
+    #print_dict(l)
+    #print_dict(d)
+    #print()
+    #print_dict(m)
+    #print_dict(a)
+    #print_dict(s)
 
     # Replace the API key below with a valid API key.
     '''
