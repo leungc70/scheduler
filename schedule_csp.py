@@ -12,6 +12,8 @@ FILE  = "sample_data/Prof-Sample.csv"
 FILE2 = "sample_data/Location-Sample.csv"
 FILE3 = "sample_data/Student-Sample.csv"
 FILE4 = "sample_data/Distance-Sample.csv"
+#distance = {}
+#locaitons = {}
 def schedule_csp_model(profs, students, time_frame):
     '''
     profs - dictionary
@@ -102,9 +104,11 @@ def schedule_csp_model(profs, students, time_frame):
         
     return schedule_csp,var_array
 
-def get_commute_time(prof1,prof2,distance,loaction):
-    prof1_loc = loaction[prof1][0]
-    prof2_loc = loaction[prof2][0]
+def get_commute_time(prof1,prof2):
+    global locations
+    global distance
+    prof1_loc = locations[prof1][0]
+    prof2_loc = locations[prof2][0]
     d = distance[(prof1_loc,prof2_loc)]
     print(d)
     if d < 800:
@@ -171,7 +175,7 @@ if __name__ == '__main__':
                  ('M5G 0A4', 'M5S 3E1'): 1000.0  }
 
     """
-    
+    global distance
     distance = file_parser.read_distance(FILE4)
     """
     locations = { 'Prof B': ['M5S 3E1'],
@@ -179,7 +183,7 @@ if __name__ == '__main__':
                   'Prof H': ['M5S 1A8'], 
                   'Prof D': ['M5G 0A4'] }
     """
-    
+    global locations
     locations = file_parser.read_location(FILE2)
     
     csp,var_array = schedule_csp_model(profs, students, time_frame)
