@@ -12,6 +12,7 @@ FILE4 = "sample_data/Distance-Sample.csv"
 
 def read_avail(file):
     """ file -> dict
+    CSV file is exported from Doodle
     Reading a  csv file and parse into an pyhton dictionary
     """
     f = open(file, 'rt')
@@ -36,6 +37,11 @@ def read_avail(file):
     return avail
 
 def read_location(file):
+    """ file -> dict of {str:str}
+    Reading a csv file and parse into an pyhton dictionary
+    key   : Name
+    value : Postal Code
+    """    
     f = open(file,'rt')
     reader = csv.reader(f)
     location = dict()
@@ -47,17 +53,29 @@ def read_location(file):
 
 
 def read_student(file):
+    """ file -> dict of {str: list of [list of str,list of tuple] }
+    Reading a csv file and parse into an pyhton dictionary
+    key            : Name
+    value          : List of [Requested Prof, availability ]
+    Requested Prof : List of Prof name
+    availability   : List of tuples (start time,end time)
+    """    
     f = open(file,'rt')
     reader = csv.reader(f)
     student = dict()
     for row in reader:
-        student[row[0]] = [row[1:],[(9,17)]]
+        student[row[0]] = [row[1:],[(9,17)]] #default 9am-5pm
     f.close()
     
 
     return student
 
 def read_distance(file):
+    """ file -> dict of {tuple of (str,str): float }
+    Reading a csv file and parse into an pyhton dictionary
+    key            : tuple of Postal Code   (source,destination)
+    value          : distance between source and destination
+    """
     f = open(file,'rt')
     reader = csv.reader(f)
     d = dict()
@@ -66,7 +84,7 @@ def read_distance(file):
     f.close()
     return d
 
-def map_distance(location):
+def map_distance(location): #Using Google API
     
     l =  {location[loc][0] for loc in location}
     dist = dict.fromkeys(l,list(l))
@@ -97,7 +115,15 @@ def formatTime(time):
 
 
 def formatDistance(distance):
+    """     str -> float
+    convert a  string into a float in meter
     
+    >>> formatDistance("1.0 km")
+    1000
+    
+    >>> formatDistance("20.0 m")
+    20    
+    """    
     distance = distance.split()
     if distance[1] == "km":
         return float(distance[0]) * 1000
@@ -105,7 +131,7 @@ def formatDistance(distance):
         return float(distance[0])
 
      
-def print_dict(availability):
+def print_dict(availability):  # function to print a dict() in a readable format
     for i in availability:
         print(i ,end=": ")
         print (availability[i]) 
@@ -123,13 +149,12 @@ if __name__ == "__main__":
     print("Setup Time = {}".format(time.process_time()-stime))
     
     print_dict(l)
-    print_dict(d)
+    #print_dict(d)
     #print()
     #print_dict(m)
     #print_dict(a)
     #print_dict(s)
 
-    # Replace the API key below with a valid API key.
     '''
     stime = time.process_time()
     
