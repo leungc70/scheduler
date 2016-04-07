@@ -6,10 +6,12 @@ Construct and return a Schedule CSP model.
 from cspbase import *
 from propagators import *
 import file_parser
+import math
 import itertools
 FILE  = "sample_data/Prof-Sample.csv"
 FILE2 = "sample_data/Location-Sample.csv"
 FILE3 = "sample_data/Student-Sample.csv"
+FILE4 = "sample_data/Distance-Sample.csv"
 def schedule_csp_model(profs, students, time_frame):
     '''
     profs - dictionary
@@ -100,8 +102,13 @@ def schedule_csp_model(profs, students, time_frame):
         
     return schedule_csp,var_array
 
-
-
+def get_travel_time(loc1,loc2,distance):
+    d = distance[(loc1,loc2)]
+    if d < 800:
+        return 0
+    else:
+        return math.ceil(d/15000)
+    
 
 def print_soln(var_array):
     for var in var_array:
@@ -144,6 +151,23 @@ if __name__ == '__main__':
      
     """
     students = file_parser.read_student(FILE3)
+    
+    """
+    distance = { ('M5G 0A4', 'M5S 1A8'): 1200.0,
+                 ('M5S 1A8', 'M5S 3E1'): 300.0,
+                 ('M5S 3E1', 'M5S 3E1'): 1.0,
+                 ('M5G 0A4', 'M5S 3E1'): 1000.0  }
+
+    """
+    distance = file_parser.read_distance(FILE4)
+    
+    """
+    locations = { 'Prof B': ['M5S 3E1'],
+                  'Prof J': ['M5S 1A8'],
+                  'Prof H': ['M5S 1A8'], 
+                  'Prof D': ['M5G 0A4'] }
+    """
+    locations = file_parser.read_location(FILE2)
     
     csp,var_array = schedule_csp_model(profs, students, time_frame)
     
