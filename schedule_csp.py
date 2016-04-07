@@ -4,21 +4,26 @@ Construct and return a Schedule CSP model.
 '''
 
 from cspbase import *
-from propagators import *
-import file_parser
 import math
 import itertools
-FILE  = "sample_data/Prof-Sample.csv"
-FILE2 = "sample_data/Location-Sample.csv"
-FILE3 = "sample_data/Student-Sample.csv"
-FILE4 = "sample_data/Distance-Sample.csv"
-#distance = {}
-#locaitons = {}
+
 def schedule_csp_model(profs, students, time_frame):
     '''
-    profs - dictionary
+    return a csp object of the schedule problem, a list of variables.
+
+
+    profs - dictionary  
+              key:  prof name; 
+            value:  availability of the prof;
+
     students - dictionary
+              key:  student name;
+         value[0]:  student preferred prof name;
+         value[1]:  availability of the student;
+
     time_frame - tuple
+              (0, 24)
+
     '''
         
     # CREATE THE VARIABLES    
@@ -28,6 +33,7 @@ def schedule_csp_model(profs, students, time_frame):
         availabilities = students[student][1]
         
         # create the domain of each student
+        # free time of the student will be saved, time is separated by 1 hour.
         dom = []
         for start,finish in availabilities:
             dom.extend(list(range(start,finish,1)))     
@@ -38,10 +44,12 @@ def schedule_csp_model(profs, students, time_frame):
             # restrict the domain given the prof availability
             final_dom = set(dom)
             prof_avail = set()
+
+            # time availability for each prof preferred by the student
             for start,finish in profs[prof]:
                 prof_avail.update(list(range(start,finish,1))) 
 
-            # the intersection of availabilities
+            # the intersection of availabilities between the prof and the student
             final_dom = final_dom & set(prof_avail)
             
             # probably want to do something else then exiting
@@ -55,9 +63,9 @@ def schedule_csp_model(profs, students, time_frame):
     
     constraints = []
     
-    # CREATE THE CONSTRAINTS [(1) - PROF CAN ONLY MEET 1 STUDENT PER HOUR]   
+    # CREATE THE CONSTRAINTS [(1) - PROF CAN ONLY MEET 1 STUDENT PER HOUR]
     
-    # contruct the binary constraint of each student pair
+    # construct the binary constraint of each student pair
     for i,student in enumerate(var_array):
         for student2 in var_array[i+1:]:
             if student.prof_name == student2.prof_name:
@@ -75,7 +83,7 @@ def schedule_csp_model(profs, students, time_frame):
                 constraints.append(con)       
     
     
-    # CREATE THE CONSTRAINTS [(2) - STUDENT CAN ONLY MEET 1 PROF PER HOUR]   
+    # CREATE THE CONSTRAINTS [(2) - STUDENT CAN ONLY MEET 1 PROF PER HOUR]
     for i,student in enumerate(var_array):
         for student2 in var_array[i+1:]:
             if student.stud_name == student2.stud_name:
@@ -127,8 +135,9 @@ def print_soln(var_array):
         
         if end > 12: end = "{}pm".format(end - 12) 
         else: end = "{}am".format(end)  
-        
+
         print("{} = {} to {}".format(var,start,end))
+
 
 def print_table(var_array):
     print(len(var_array))
@@ -140,61 +149,3 @@ def print_table(var_array):
     
     for n in p:
         print(n)
-        
-if __name__ == '__main__':
-    
-    # 0 to 24 hours
-    time_frame = (0, 24)
-    
-    
-    # availability of profs
-    """
-    profs = { 'prof1':[(0,2),(4,8)],
-              'prof2':[(7,10),(11,14),(15,16)],
-              'prof3':[(6,10),(15,17),(20,22)] }
-    """
-    profs = file_parser.read_avail(FILE)
-    
-    all_profs = list(profs.keys())
-    
-    # preferred prof and availability of students
-    """
-    students = { 'student1':[['prof1'],          [time_frame]],
-                 'student2':[['prof2'],          [(0,10),(10,2)]],
-                 'student3':[['prof2','prof3'],  [time_frame]],
-                 'student4':[['prof1','prof3'],  [(5,10),(20,24)]],
-                 'student5':[all_profs        ,  [time_frame]]        }
-     
-    """
-    students = file_parser.read_student(FILE3)
-    
-    """
-    distance = { ('M5G 0A4', 'M5S 1A8'): 1200.0,
-                 ('M5S 1A8', 'M5S 3E1'): 300.0,
-                 ('M5S 3E1', 'M5S 3E1'): 1.0,
-                 ('M5G 0A4', 'M5S 3E1'): 1000.0  }
-
-    """
-    global distance
-    distance = file_parser.read_distance(FILE4)
-    """
-    locations = { 'Prof B': ['M5S 3E1'],
-                  'Prof J': ['M5S 1A8'],
-                  'Prof H': ['M5S 1A8'], 
-                  'Prof D': ['M5G 0A4'] }
-    """
-    global locations
-    locations = file_parser.read_location(FILE2)
-    
-    csp,var_array = schedule_csp_model(profs, students, time_frame)
-    
-    solver = BT(csp)
-    print()
-    print("======GAC=====")
-    solver.bt_search(prop_GAC)
-    
-    print()
-    print("=====Solution=====")
-    print_soln(var_array)
-    print_table(var_array)
-   
