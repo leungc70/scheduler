@@ -1,6 +1,6 @@
 import csv
 import os
-import googlemaps
+#import googlemaps
 import json
 import time
 from datetime import datetime
@@ -8,7 +8,7 @@ FILE  = "sample_data/Prof-Sample.csv"
 FILE2 = "sample_data/Location-Sample.csv"
 FILE3 = "sample_data/Student-Sample.csv"
 FILE4 = "sample_data/Distance-Sample.csv"
-gmaps = googlemaps.Client(key='AIzaSyA8vRIsxHzhbY113NJpQqomQmBVd6zLswE')
+#gmaps = googlemaps.Client(key='AIzaSyA8vRIsxHzhbY113NJpQqomQmBVd6zLswE')
 
 def read_avail(file):
     """ file -> dict
@@ -122,8 +122,8 @@ if __name__ == "__main__":
    
     print("Setup Time = {}".format(time.process_time()-stime))
     
-    #print_dict(l)
-    #print_dict(d)
+    print_dict(l)
+    print_dict(d)
     #print()
     #print_dict(m)
     #print_dict(a)
