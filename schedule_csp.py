@@ -4,8 +4,6 @@ Construct and return a Schedule CSP model.
 '''
 
 from cspbase import *
-from propagators import *
-import file_parser
 import math
 import itertools
 
@@ -114,8 +112,13 @@ def schedule_csp_model(profs, students, time_frame):
         
     return schedule_csp,var_array
 
-def get_travel_time(loc1,loc2,distance):
-    d = distance[(loc1,loc2)]
+def get_commute_time(prof1,prof2):
+    global locations
+    global distance
+    prof1_loc = locations[prof1][0]
+    prof2_loc = locations[prof2][0]
+    d = distance[(prof1_loc,prof2_loc)]
+    print(d)
     if d < 800:
         return 0
     else:
@@ -132,5 +135,17 @@ def print_soln(var_array):
         
         if end > 12: end = "{}pm".format(end - 12) 
         else: end = "{}am".format(end)  
-        
+
         print("{} = {} to {}".format(var,start,end))
+
+
+def print_table(var_array):
+    print(len(var_array))
+    print("         | 9am to 10am | 10am to 11am | 11am to 12pm | \
+12pm to  1pm | 1pm to 2pm | 2pm to 3pm | 3pm to 4pm | 4pm to 5pm |")
+    p = set()
+    for v in var_array:
+        p.add(v.prof_name)
+    
+    for n in p:
+        print(n)

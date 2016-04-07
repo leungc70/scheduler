@@ -3,7 +3,7 @@
 Run this file to test schedule_csp.py
 '''
 
-from schedule_csp import schedule_csp_model, print_soln
+from schedule_csp import schedule_csp_model, print_soln, print_table
 import file_parser
 import cspbase
 import propagators
@@ -12,6 +12,8 @@ FILE  = "sample_data/Prof-Sample.csv"
 FILE2 = "sample_data/Location-Sample.csv"
 FILE3 = "sample_data/Student-Sample.csv"
 FILE4 = "sample_data/Distance-Sample.csv"
+#distance = {}
+#locaitons = {}
 
 '''
 Interactive test mode
@@ -52,6 +54,7 @@ if __name__ == '__main__':
                  ('M5G 0A4', 'M5S 3E1'): 1000.0  }
 
     """
+    global distance
     distance = file_parser.read_distance(FILE4)
 
     """
@@ -60,6 +63,7 @@ if __name__ == '__main__':
                   'Prof H': ['M5S 1A8'],
                   'Prof D': ['M5G 0A4'] }
     """
+    global locations
     locations = file_parser.read_location(FILE2)
 
     csp, var_array = schedule_csp_model(profs, students, time_frame)
@@ -95,3 +99,4 @@ if __name__ == '__main__':
         print()
         print("=====Solution=====")
         print_soln(var_array)
+        print_table(var_array)
