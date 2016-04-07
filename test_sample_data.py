@@ -66,7 +66,7 @@ if __name__ == '__main__':
     global locations
     locations = file_parser.read_location(FILE2)
 
-    csp, var_array = schedule_csp_model(profs, students, time_frame)
+    csp, var_array = schedule_csp_model(profs, students, time_frame, locations, distance)
     solver = cspbase.BT(csp)
 
     # Menue
