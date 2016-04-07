@@ -7,7 +7,7 @@ from cspbase import *
 import math
 import itertools
 
-def schedule_csp_model(profs, students, time_frame):
+def schedule_csp_model(profs, students, time_frame, l, d):
     '''
     return a csp object of the schedule problem, a list of variables.
 
@@ -98,9 +98,31 @@ def schedule_csp_model(profs, students, time_frame):
                 name = "student_diff({},{})".format(student.name,student2.name)
                 con = Constraint(name, [student, student2])
                 con.add_satisfying_tuples(sat_tuples)
-                constraints.append(con)                  
+                constraints.append(con)    
                 
-    
+                
+    # CREATE THE CONSTRAINTS [(3) - STUDENT TRAVEL TIME BETWEEN PROFS]        
+    for i,student in enumerate(var_array):
+        for student2 in var_array[i+1:]:
+            if student.stud_name == student2.stud_name:  
+                
+                # the commute time in hours
+                c_time = get_commute_time(student.prof_name,student2.prof_name,l,d)
+                c_time = c_time + 1
+                
+                # construct the tuples for the constraint
+                sat_tuples = []
+                for v1,v2 in itertools.product(student.dom,student2.dom):
+                    if abs(v1 - v2) >= c_time:
+                        sat_tuples.append((v1,v2))
+                        
+                # construct the constraint
+                name = "travel({},{})".format(student.name,student2.name)
+                con = Constraint(name, [student, student2])                
+                con.add_satisfying_tuples(sat_tuples)
+                constraints.append(con) 
+                
+                
     
     # CONSTRUCT THE SCHEDULING CSP
     schedule_csp = CSP("SCHEDULE")
@@ -112,13 +134,10 @@ def schedule_csp_model(profs, students, time_frame):
         
     return schedule_csp,var_array
 
-def get_commute_time(prof1,prof2):
-    global locations
-    global distance
+def get_commute_time(prof1,prof2,locations,distance):
     prof1_loc = locations[prof1][0]
     prof2_loc = locations[prof2][0]
     d = distance[(prof1_loc,prof2_loc)]
-    print(d)
     if d < 800:
         return 0
     else:
