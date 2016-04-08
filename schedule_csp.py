@@ -7,25 +7,25 @@ from cspbase import *
 import math
 import itertools
 
-def schedule_csp_model(profs, students, time_frame, l, d):
-    '''
-    return a csp object of the schedule problem, a list of variables.
+'''
+return a csp object of the schedule problem, a list of variables.
 
 
-    profs - dictionary  
-              key:  prof name; 
-            value:  availability of the prof;
+profs - dictionary
+          key:  prof name;
+        value:  availability of the prof;
 
-    students - dictionary
-              key:  student name;
-         value[0]:  student preferred prof name;
-         value[1]:  availability of the student;
+students - dictionary
+          key:  student name;
+     value[0]:  student preferred prof name;
+     value[1]:  availability of the student;
 
-    time_frame - tuple
-              (0, 24)
+time_frame - tuple
+          (0, 24)
 
-    '''
-        
+'''
+def schedule_csp_model(profs, students, time_frame, locations, distance):
+
     # CREATE THE VARIABLES    
     var_array = []    
     for student in students:
@@ -107,7 +107,7 @@ def schedule_csp_model(profs, students, time_frame, l, d):
             if student.stud_name == student2.stud_name:  
                 
                 # the commute time in hours
-                c_time = get_commute_time(student.prof_name,student2.prof_name,l,d)
+                c_time = get_commute_time(student.prof_name, student2.prof_name, locations, distance)
                 c_time = c_time + 1
                 
                 # construct the tuples for the constraint
@@ -134,16 +134,37 @@ def schedule_csp_model(profs, students, time_frame, l, d):
         
     return schedule_csp,var_array
 
+
+'''
+Calculate the travle time between the locations of two professors
+
+@param  prof1 professor
+        prof2 professor
+        locations locations read from locations file
+        distance  distance read from distance file
+
+return  time it takes to travel between prof1 and prof2
+'''
 def get_commute_time(prof1,prof2,locations,distance):
     prof1_loc = locations[prof1][0]
     prof2_loc = locations[prof2][0]
     d = distance[(prof1_loc,prof2_loc)]
+
+    # distance is short enough
     if d < 800:
         return 0
     else:
+        # 15000m is the regular walking distance.
         return math.ceil(d/15000)
     
 
+'''
+Print the solution in a nicer format.
+
+(Student C is assigned to see Prof D at 12am to 1pm)
+example: Var--Student C.Prof D = 12am to 1pm
+
+'''
 def print_soln(var_array):
     for var in var_array:
         start = var.get_assigned_value()        
@@ -158,6 +179,10 @@ def print_soln(var_array):
         print("{} = {} to {}".format(var,start,end))
 
 
+'''
+Print the schedule with the solution of each student has been assigned to
+    see his preferred professor in both his and the professor's free time.
+'''
 def print_table(var_array):
     print(len(var_array))
     print("         | 9am to 10am | 10am to 11am | 11am to 12pm | \
