@@ -56,8 +56,8 @@ if __name__ == '__main__':
                  ('M5G 0A4', 'M5S 3E1'): 1000.0  }
 
     """
-    global distance
     distance = file_parser.read_distance(DISTANCE_FILE)
+
 
     """
     locations = { 'Prof B': ['M5S 3E1'],
@@ -65,7 +65,6 @@ if __name__ == '__main__':
                   'Prof H': ['M5S 1A8'],
                   'Prof D': ['M5G 0A4'] }
     """
-    global locations
     locations = file_parser.read_location(LOCATIONS_FILE)
 
     csp, var_array = schedule_csp_model(profs, students, time_frame, locations, distance)
@@ -95,7 +94,7 @@ if __name__ == '__main__':
             print()
             print("======ERROR=====")
             print("ERROR: Your input is not valid.")
-            print("NOTE: Please choose from BT, FT or GAC")
+            print("NOTE: Please choose from BT, FC or GAC")
             continue
 
         print()
