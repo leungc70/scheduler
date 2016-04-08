@@ -147,7 +147,7 @@ if __name__ == '__main__':
         print()
         print("Running environment setup success...")
         print("Please choose which propagator you'd like to use?")
-        print("Choices: BT, FT, GAC")
+        print("Choices: BT, FC, GAC")
 
         propa = input()
 
@@ -155,7 +155,7 @@ if __name__ == '__main__':
             print()
             print("======GAC=====")
             solver.bt_search(propagators.prop_GAC)
-        elif propa == "FT":
+        elif propa == "FC":
             print()
             print("=======FC======")
             solver.bt_search(propagators.prop_FC)
@@ -171,7 +171,7 @@ if __name__ == '__main__':
             print()
             print("======ERROR=====")
             print("ERROR: Your input is not valid.")
-            print("NOTE: Please choose from BT, FT or GAC")
+            print("NOTE: Please choose from BT, FC or GAC")
             continue
 
         print()
