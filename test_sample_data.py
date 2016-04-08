@@ -8,12 +8,14 @@ import file_parser
 import cspbase
 import propagators
 
-FILE  = "sample_data/Prof-Sample.csv"
-FILE2 = "sample_data/Location-Sample.csv"
-FILE3 = "sample_data/Student-Sample.csv"
-FILE4 = "sample_data/Distance-Sample.csv"
-#distance = {}
-#locaitons = {}
+# profs
+PROF_FILE  = "data/sample_data/Prof-Sample.csv"
+# locations
+LOCATIONS_FILE = "data/sample_data/Location-Sample.csv"
+# students
+STUDENTS_FILE = "data/sample_data/Student-Sample.csv"
+# distance
+DISTANCE_FILE = "data/sample_data/Distance-Sample.csv"
 
 '''
 Interactive test mode
@@ -32,7 +34,7 @@ if __name__ == '__main__':
               'prof2':[(7,10),(11,14),(15,16)],
               'prof3':[(6,10),(15,17),(20,22)] }
     """
-    profs = file_parser.read_avail(FILE)
+    profs = file_parser.read_avail(PROF_FILE)
 
     all_profs = list(profs.keys())
 
@@ -45,7 +47,7 @@ if __name__ == '__main__':
                  'student5':[all_profs        ,  [time_frame]]        }
 
     """
-    students = file_parser.read_student(FILE3)
+    students = file_parser.read_student(STUDENTS_FILE)
 
     """
     distance = { ('M5G 0A4', 'M5S 1A8'): 1200.0,
@@ -54,8 +56,8 @@ if __name__ == '__main__':
                  ('M5G 0A4', 'M5S 3E1'): 1000.0  }
 
     """
+    distance = file_parser.read_distance(DISTANCE_FILE)
 
-    distance = file_parser.read_distance(FILE4)
 
     """
     locations = { 'Prof B': ['M5S 3E1'],
@@ -63,8 +65,7 @@ if __name__ == '__main__':
                   'Prof H': ['M5S 1A8'],
                   'Prof D': ['M5G 0A4'] }
     """
-
-    locations = file_parser.read_location(FILE2)
+    locations = file_parser.read_location(LOCATIONS_FILE)
 
     csp, var_array = schedule_csp_model(profs, students, time_frame, locations, distance)
     solver = cspbase.BT(csp)

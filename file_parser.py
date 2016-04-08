@@ -4,10 +4,7 @@ import os
 import json
 import time
 from datetime import datetime
-FILE  = "sample_data/Prof-Sample.csv"
-FILE2 = "sample_data/Location-Sample.csv"
-FILE3 = "sample_data/Student-Sample.csv"
-FILE4 = "sample_data/Distance-Sample.csv"
+
 #gmaps = googlemaps.Client(key='AIzaSyA8vRIsxHzhbY113NJpQqomQmBVd6zLswE')
 
 def read_avail(file):
@@ -26,11 +23,6 @@ def read_avail(file):
     avail = dict()
     for row in reader: #parsing
         avail[row[0]] = [formatTime(time[i])for i in range(len(row)) if row[i] == 'OK']
-        #print(row)
-    del avail['Count']
-
-
-    #print_avail(avail)
    
     f.close()
     
