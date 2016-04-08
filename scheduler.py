@@ -44,6 +44,8 @@ if __name__ == '__main__':
     profs = None
     all_profs = None
     students = None
+    distance = None
+    locations = None
 
     while not time_frame:
         # Setting up the time fram
@@ -64,6 +66,7 @@ if __name__ == '__main__':
             print()
             print("======ERROR=====")
             print("ERROR: Your input is not valid.")
+
 
     """
     format of profs
@@ -132,14 +135,77 @@ if __name__ == '__main__':
         except FileNotFoundError as e:
             print()
             print("======ERROR=====")
-            print("FILE {} is not found".format(prof_file))
+            print("FILE {} is not found".format(student_file))
 
     print()
     print("======SUCCESS=====")
     print("Reading student's availabilities success...")
 
+
+    """
+        distance = { ('M5G 0A4', 'M5S 1A8'): 1200.0,
+                     ('M5S 1A8', 'M5S 3E1'): 300.0,
+                     ('M5S 3E1', 'M5S 3E1'): 1.0,
+                     ('M5G 0A4', 'M5S 3E1'): 1000.0  }
+
+    """
+    while not distance:
+        print()
+        print("Readding distance...")
+        print("Please specify which file to read...")
+        print("Please choose a file from /data/distance/")
+
+        distance_dir = "data/distance/"
+        list_all_csvfiles(distance_dir)
+
+        distance_input_fname = input()
+        distance_file = distance_dir + distance_input_fname
+
+        print("Reading from FILE {}...".format(distance_file))
+        try:
+            distance = file_parser.read_distance(distance_file)
+        except FileNotFoundError as e:
+            print()
+            print("======ERROR=====")
+            print("FILE {} is not found".format(distance_file))
+
+    print()
+    print("======SUCCESS=====")
+    print("Reading distance success...")
+
+    """
+    locations = { 'Prof B': ['M5S 3E1'],
+                  'Prof J': ['M5S 1A8'],
+                  'Prof H': ['M5S 1A8'],
+                  'Prof D': ['M5G 0A4'] }
+    """
+    while not locations:
+        print()
+        print("Readding location of the professors...")
+        print("Please specify which file to read...")
+        print("Please choose a file from /data/locations/")
+
+        locations_dir = "data/locations/"
+        list_all_csvfiles(locations_dir)
+
+        locations_input_fname = input()
+        locations_file = locations_dir + locations_input_fname
+
+        print("Reading from FILE {}...".format(locations_file))
+        try:
+            locations = file_parser.read_location(locations_file)
+        except FileNotFoundError as e:
+            print()
+            print("======ERROR=====")
+            print("FILE {} is not found".format(locations_file))
+
+    print()
+    print("======SUCCESS=====")
+    print("Reading locations success...")
+
+
     # construct the interview scheduling CSP
-    csp, var_array = schedule_csp_model(profs, students, time_frame)
+    csp, var_array = schedule_csp_model(profs, students, time_frame, locations, distance)
     solver = cspbase.BT(csp)
 
     # Menue
