@@ -54,7 +54,7 @@ if __name__ == '__main__':
                  ('M5G 0A4', 'M5S 3E1'): 1000.0  }
 
     """
-    global distance
+
     distance = file_parser.read_distance(FILE4)
 
     """
@@ -63,7 +63,7 @@ if __name__ == '__main__':
                   'Prof H': ['M5S 1A8'],
                   'Prof D': ['M5G 0A4'] }
     """
-    global locations
+
     locations = file_parser.read_location(FILE2)
 
     csp, var_array = schedule_csp_model(profs, students, time_frame, locations, distance)
@@ -81,7 +81,7 @@ if __name__ == '__main__':
             print()
             print("======GAC=====")
             solver.bt_search(propagators.prop_GAC)
-        elif propa == "FT":
+        elif propa == "FC":
             print()
             print("=======FC======")
             solver.bt_search(propagators.prop_FC)
@@ -93,7 +93,7 @@ if __name__ == '__main__':
             print()
             print("======ERROR=====")
             print("ERROR: Your input is not valid.")
-            print("NOTE: Please choose from BT, FT or GAC")
+            print("NOTE: Please choose from BT, FC or GAC")
             continue
 
         print()
