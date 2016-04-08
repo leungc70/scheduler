@@ -145,21 +145,28 @@ def get_commute_time(prof1,prof2,locations,distance):
     
 
 def print_soln(var_array):
+
     for var in var_array:
-        start = var.get_assigned_value()        
+        start = var.get_assigned_value()    
+        if not start:
+            print("No Solution Found") 
+            return
+
         end = start + 1
         
-        if start > 12: start = "{}pm".format(start - 12) 
+        if start > 12: start = "{}pm".format(start - 12)
+        elif start == 12: start = "{}pm".format(start)
         else: start = "{}am".format(start)
         
-        if end > 12: end = "{}pm".format(end - 12) 
+        if end > 12: end = "{}pm".format(end - 12)
+        elif end == 12: end = "{}pm".format(end)
         else: end = "{}am".format(end)  
 
         print("{} = {} to {}".format(var,start,end))
 
 
 def print_table(var_array):
-    print(len(var_array))
+    #print(len(var_array))
     print("         | 9am to 10am | 10am to 11am | 11am to 12pm | \
 12pm to  1pm | 1pm to 2pm | 2pm to 3pm | 3pm to 4pm | 4pm to 5pm |")
     p = set()
