@@ -6,9 +6,9 @@
    	Python scheduler.py
    	```
    	and follow the message in the console.
-There are already sets of data in the repo /data.
+	There are already sets of data in the repo /data.
 
-There are locations, students, profs, and distance .csv files located in the repo that named accordingly.
+	There are locations, students, profs, and distance .csv files located in the repo that named accordingly.
 
 2. If you want to generate some data, please run
 	```
