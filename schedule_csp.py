@@ -20,11 +20,8 @@ students - dictionary
      value[0]:  student preferred prof name;
      value[1]:  availability of the student;
 
-time_frame - tuple
-          (0, 24)
-
 '''
-def schedule_csp_model(profs, students, time_frame, locations, distance):
+def schedule_csp_model(profs, students, locations, distance):
 
     # CREATE THE VARIABLES    
     var_array = []    
