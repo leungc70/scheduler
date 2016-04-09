@@ -40,33 +40,10 @@ Instruction:
 '''
 if __name__ == '__main__':
     # define variables
-    time_frame = None
     profs = None
-    all_profs = None
     students = None
     distance = None
     locations = None
-
-    while not time_frame:
-        # Setting up the time fram
-        print()
-        print("Please setup the running environment...")
-        print("Please Choose the time fram...")
-        print("Choice: 12, 24")
-
-        input_tf = input()
-
-        if input_tf == "12":
-            # 0 to 12 hours
-            time_frame = (0, 12)
-        elif input_tf == "24":
-            # 0 to 24 hours
-            time_frame = (0, 24)
-        else:
-            print()
-            print("======ERROR=====")
-            print("ERROR: Your input is not valid.")
-
 
     """
     format of profs
@@ -74,7 +51,7 @@ if __name__ == '__main__':
               'prof2':[(7,10),(11,14),(15,16)],
               'prof3':[(6,10),(15,17),(20,22)] }
     """
-    while not all_profs:
+    while not profs:
         # availability of profs
         print()
         print("Readding professor's availabilities...")
@@ -96,9 +73,6 @@ if __name__ == '__main__':
             print()
             print("======ERROR=====")
             print("FILE {} is not found".format(prof_file))
-
-        if profs:
-            all_profs = list(profs.keys())
 
 
     # message on console
@@ -205,7 +179,7 @@ if __name__ == '__main__':
 
 
     # construct the interview scheduling CSP
-    csp, var_array = schedule_csp_model(profs, students, time_frame, locations, distance)
+    csp, var_array = schedule_csp_model(profs, students, locations, distance)
     solver = cspbase.BT(csp)
 
     # Menue
