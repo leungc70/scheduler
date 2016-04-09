@@ -192,11 +192,30 @@ Print the schedule with the solution of each student has been assigned to
 '''
 def print_table(var_array):
     #print(len(var_array))
-    print("         | 9am to 10am | 10am to 11am | 11am to 12pm | \
-12pm to  1pm | 1pm to 2pm | 2pm to 3pm | 3pm to 4pm | 4pm to 5pm |")
-    p = set()
+    #print("\t\t| 9am to 10am |\t10am to 11am\t|\t11am to 12pm\t| \t12pm to  1pm\t|\t1pm to  2pm\t|\t2pm to  3pm\t|\t3pm to  4pm\t|\t4pm to  5pm\t|")
+    print('\t\t|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}|{:^20}'.format\
+          ('9am to 10am','10am to 11am','11am to 12pm','12pm to  1pm',\
+                  '1pm to  2pm','2pm to  3pm','3pm to  4pm','4pm to  5pm'))
+    print("-"*190)  #printing the header
+    profs = set()
     for v in var_array:
-        p.add(v.prof_name)
+        profs.add(v.prof_name)
+    d = [" "+"-"*18+" "]      #print dash for empty slot
+    s = [" "*20              ]#print space for empty slot
+    time_slot = dict()
+    for prof in profs:
+        time_slot[prof] = s * 8
     
-    for n in p:
-        print(n)
+    map_time = { i+9:i for i in range(8)}
+    for v in var_array:                          #filling up the table
+        name = v.prof_name
+        value = v.get_assigned_value()
+        display_name = '{:^20.20}'.format(v.stud_name)
+        time_slot[name][map_time[value]]= display_name
+        
+    for prof in profs :
+        print('{:<15.15}'.format(prof),end=" :")        #printing the table
+        for t in time_slot[prof]:
+            print(t,end="|")
+ 
+        print()
