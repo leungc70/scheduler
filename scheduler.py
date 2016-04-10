@@ -187,23 +187,23 @@ if __name__ == '__main__':
         print()
         print("Running environment setup success...")
         print("Please choose which propagator you'd like to use?")
-        print("Choices: BT, FC, GAC")
+        print("Choices: BT, FC, GAC , enter 'exit' to quit")
 
         propa = input()
 
-        if propa == "GAC":
+        if propa.upper() == "GAC":
             print()
             print("======GAC=====")
             solver.bt_search(propagators.prop_GAC)
-        elif propa == "FC":
+        elif propa.upper() == "FC":
             print()
             print("=======FC======")
             solver.bt_search(propagators.prop_FC)
-        elif propa == "BT":
+        elif propa.upper() == "BT":
             print()
             print("======BT=====")
             solver.bt_search(propagators.prop_BT)
-        elif propa == "exit":
+        elif propa.upper() == "exit":
             print()
             print("Exiting...")
             break

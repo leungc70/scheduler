@@ -71,22 +71,24 @@ if __name__ == '__main__':
     while(1):
         print()
         print("Please choose which propagator you'd like to use?")
-        print("Choices: BT, FC, GAC")
+        print("Choices: BT, FC, GAC , enter 'q' to exit")
 
         propa = input()
 
-        if propa == "GAC":
+        if propa.upper() == "GAC":
             print()
             print("======GAC=====")
             solver.bt_search(propagators.prop_GAC)
-        elif propa == "FC":
+        elif propa.upper() == "FC":
             print()
             print("=======FC======")
             solver.bt_search(propagators.prop_FC)
-        elif propa == "BT":
+        elif propa.upper() == "BT":
             print()
             print("======BT=====")
             solver.bt_search(propagators.prop_BT)
+        elif propa.upper() == "Q":
+            break
         else:
             print()
             print("======ERROR=====")
