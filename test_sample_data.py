@@ -24,9 +24,6 @@ if __name__ == '__main__':
     # print status in the console
     print("Setting up variables...")
 
-    # 0 to 24 hours
-    time_frame = (0, 24)
-
     print("Reading sample data files...")
     # availability of profs
     """
@@ -67,7 +64,7 @@ if __name__ == '__main__':
     """
     locations = file_parser.read_location(LOCATIONS_FILE)
 
-    csp, var_array = schedule_csp_model(profs, students, time_frame, locations, distance)
+    csp, var_array = schedule_csp_model(profs, students, locations, distance)
     solver = cspbase.BT(csp)
 
     # Menue
