@@ -203,7 +203,7 @@ if __name__ == '__main__':
             print()
             print("======BT=====")
             solver.bt_search(propagators.prop_BT)
-        elif propa.upper() == "exit":
+        elif propa.upper() == "EXIT":
             print()
             print("Exiting...")
             break
