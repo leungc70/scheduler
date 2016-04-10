@@ -2,7 +2,7 @@
 Interactive running mode
 '''
 
-from schedule_csp import schedule_csp_model, print_soln
+from schedule_csp import schedule_csp_model, print_soln , print_table
 from os import listdir
 import file_parser
 import cspbase
@@ -217,3 +217,5 @@ if __name__ == '__main__':
         print()
         print("=====Solution=====")
         print_soln(var_array)
+        print()
+        print_table(var_array)        

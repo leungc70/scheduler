@@ -210,7 +210,7 @@ def print_table(var_array):
         display_name = '{:^20.20}'.format(v.stud_name)
         time_slot[name][map_time[value]]= display_name
         
-    for prof in profs :
+    for prof in sorted(profs) :
         print('{:<15.15}'.format(prof),end=" :")        #printing the table
         for t in time_slot[prof]:
             print(t,end="|")
